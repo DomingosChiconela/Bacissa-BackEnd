@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+} 
+enum Role {
+  USER
+  ADMIN
+}
+
+model User{
+  id String  @id @default(uuid())
+  email String  @unique
+  password String
+  role    Role     @default(USER)
+  token  String?
+  profile Profile?
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt
+
+
+  @@map("users")
+
+
+}
+
+
+
+model Profile{
+  id String  @id @default(uuid())
+  name String 
+  image  String?
+  evaluation Int?
+  userId  String? @unique
+  user User? @relation(fields: [userId],references: [id])
+  locationId String? @unique
+  location Location? @relation(fields: [locationId],references: [id])
+
+
+  @@map("profiles")
+
+}
+
+
+model Location {
+  id String  @id @default(uuid())
+  profile Profile?
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt 
+
+  @@map("locations")
+}
+
+
+model Province{
+  id String  @id @default(uuid())
+
+  name String  @unique
+
+  district  District[]
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt 
+  @@map("provinces")
+
+}
+
+model District{
+  id String  @id @default(uuid())
+
+
+
+  province Province @relation(fields: [provinceId],references: [id],onDelete: Cascade)
+   provinceId String
+  neighborhood Neighborhood[]
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt 
+  
+  @@map("districts")
+
+
+}
+
+
+model Neighborhood {
+  id String  @id @default(uuid())
+  name String  @unique
+
+  district District @relation(fields: [districtId],references: [id],onDelete: Cascade)
+  districtId String
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt 
+  
+  @@map("neighborhoods")
+}
+
+
+model Waste {
+  id String  @id @default(uuid())
+  name  String @unique
+  post Post?
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt 
+}
+
+model Post{
+  id String  @id @default(uuid())
+  waste Waste @relation(fields: [wasteId],references: [id])
+  wasteId String @unique
+  quantity Decimal
+  latitude String
+  longitude String
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt 
+
+
+  @@map("posts")
+
+}
