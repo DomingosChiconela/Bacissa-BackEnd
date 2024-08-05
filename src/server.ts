@@ -1,6 +1,8 @@
 import express, { urlencoded } from "express"
 import * as dotenv  from "dotenv"
 import { authRoute } from "./routes/authRoute"
+import { useRoute } from "./routes/userRoute"
+import { residueRoute } from "./routes/residueRoute"
 
 
 dotenv.config()
@@ -14,6 +16,10 @@ app.use(urlencoded({extended:true}))
 
 
 app.use('/api/auth',authRoute)
+
+app.use('/api/use',useRoute)
+
+app.use('/api/residue',residueRoute)
 
 
 

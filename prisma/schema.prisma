@@ -103,17 +103,19 @@ model Neighborhood {
 }
 
 
-model Waste {
+model Residue {
   id String  @id @default(uuid())
   name  String @unique
   post Post?
   createdAt DateTime @default(now()) 
   updatedAt DateTime  @updatedAt 
+
+  @@map("residues")
 }
 
 model Post{
   id String  @id @default(uuid())
-  waste Waste @relation(fields: [wasteId],references: [id])
+  waste Residue @relation(fields: [wasteId],references: [id])
   wasteId String @unique
   quantity Decimal
   latitude String

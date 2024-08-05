@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import { z,  } from "zod";
+import { z } from "zod";
 import { db } from "../utils/db.server";
 import { fromZodError } from "zod-validation-error"
 import * as jwt from "jsonwebtoken"
@@ -7,7 +7,7 @@ import * as jwt from "jsonwebtoken"
 const secret  =  process.env.SECRET as string
 
 import { checkPassword, encryptPassword } from "../utils/cryptPassword";
-import { Role } from "@prisma/client";
+
 
 const signupSchema = z.object({
 
