@@ -10,7 +10,8 @@ type TokenPayload = {
 
     id:string,
     iat:number,
-    exp:number
+    exp:number,
+    role: string
 
 }
  
@@ -30,9 +31,10 @@ export const AuthMiddleware  =  (req:Request,res:Response, next:NextFunction)=>{
 
         const decode  =  verify(token,secret)
 
-        const {id} =  decode as TokenPayload
+        const {id,role} =  decode as TokenPayload
 
         req.userId =  id;
+        req.role  =  role
 
         next()
 

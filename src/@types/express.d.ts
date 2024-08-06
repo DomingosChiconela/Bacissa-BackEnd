@@ -9,6 +9,7 @@ declare global {
     interface Request {
       file: MulterFile;
       userId: string;
+      role:string 
     }
   }
 }
