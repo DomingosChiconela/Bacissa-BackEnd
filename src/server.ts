@@ -4,6 +4,11 @@ import { authRoute } from "./routes/authRoute"
 import { useRoute } from "./routes/userRoute"
 import { residueRoute } from "./routes/residueRoute"
 
+import { Request,Response } from "express";
+import { uploadS3 } from "./middlewares/uploudMiddleware"
+
+
+
 
 dotenv.config()
 const app  =   express()
@@ -25,9 +30,17 @@ app.use('/api/residue',residueRoute)
 
 
 
+app.post('/test',uploadS3("bacissa-profile").single('profile'),(req:Request, res:Response)=>{
+    console.log(req.file)
+    res.status(201).json(req.file)
+})
+
+
 app.listen(port , ()=>{
 
 console.log(` servidor rodando em http://localhost:${port}`)
+
+
 })
 
 
