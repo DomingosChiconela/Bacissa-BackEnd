@@ -1,11 +1,11 @@
 import  express from "express"
-import { userUpdate } from "../controllers/useController"
+import { getAllUser, userUpdate } from "../controllers/userController"
 
 
 
-export const useRoute =  express.Router()
+export const userRoute =  express.Router()
 
-
-useRoute.put('/update',userUpdate)
+userRoute.get("/",getAllUser)
+userRoute.put('/update',userUpdate)
 
 

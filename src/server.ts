@@ -1,11 +1,12 @@
 import express, { urlencoded } from "express"
 import * as dotenv  from "dotenv"
 import { authRoute } from "./routes/authRoute"
-import { useRoute } from "./routes/userRoute"
+import { userRoute } from "./routes/userRoute"
 import { residueRoute } from "./routes/residueRoute"
 
 import { Request,Response } from "express";
 import { uploadS3 } from "./middlewares/uploudMiddleware"
+import { profileRoute } from "./routes/profileRoute"
 
 
 
@@ -21,19 +22,12 @@ app.use(urlencoded({extended:true}))
 
 
 app.use('/api/auth',authRoute)
-
-app.use('/api/use',useRoute)
-
+app.use('/api/user',userRoute)
 app.use('/api/residue',residueRoute)
+app.use('/api/profile',profileRoute)
 
 
 
-
-
-app.post('/test',uploadS3("bacissa-profile").single('profile'),(req:Request, res:Response)=>{
-    console.log(req.file)
-    res.status(201).json(req.file)
-})
 
 
 app.listen(port , ()=>{

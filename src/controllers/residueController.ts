@@ -97,6 +97,15 @@ export const updateReside  = async(req:Request , res:Response)=>{
         return  res.status(400).json({message:fromZodError(validation.error).details})
     }
     try{
+
+        const existingResidue = await db.residue.findUnique({
+            where: {id}
+        });
+
+        if (!existingResidue) {
+            return res.status(404).json({ message: "Residue not found" });
+        }
+
         const updateReside =  await db.residue.update({
             where:{
                 id
@@ -129,7 +138,17 @@ export const deleteResidue = async(req:Request , res:Response)=>{
 
     const { id}  =  req.params
 
+
     try{
+
+        const existingResidue = await db.residue.findUnique({
+            where: {id}
+        });
+
+        if (!existingResidue) {
+            return res.status(404).json({ message: "Residue not found" });
+        }
+
 
         const residue  =  await  db.residue.delete({
             where:{id}

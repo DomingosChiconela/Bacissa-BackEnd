@@ -9,6 +9,48 @@ const  UserSchema  = z.object({
 
 })
 
+const userSchema = z.object({
+
+
+    name:z.string(),
+    email:z.string().email("O email e obrgatorio").toLowerCase(),
+   
+})
+
+
+export const  getAllUser = async(req:Request , res:Response)=>{
+
+    try{
+
+        const allUser = await db.user.findMany({
+            select:{
+               id:true,
+               email:true,
+               role:true,
+               createdAt:true ,
+               updatedAt:true,
+
+               profile:{
+                  select:{
+                    name:true
+                  }
+               }
+
+            }
+        })
+
+        res.status(200).json({message:"All User",data:allUser})
+
+
+    }catch(error){
+        return res.status(500).json({ message: "Internal Server Error" });
+
+    }
+
+
+
+}
+
 
 
 

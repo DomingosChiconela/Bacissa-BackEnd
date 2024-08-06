@@ -44,6 +44,8 @@ model Profile{
   user User? @relation(fields: [userId],references: [id])
   locationId String? @unique
   location Location? @relation(fields: [locationId],references: [id])
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime  @updatedAt
 
 
   @@map("profiles")
@@ -63,9 +65,7 @@ model Location {
 
 model Province{
   id String  @id @default(uuid())
-
   name String  @unique
-
   district  District[]
   createdAt DateTime @default(now()) 
   updatedAt DateTime  @updatedAt 
@@ -115,8 +115,8 @@ model Residue {
 
 model Post{
   id String  @id @default(uuid())
-  waste Residue @relation(fields: [wasteId],references: [id])
-  wasteId String @unique
+  residue Residue @relation(fields: [residueId],references: [id])
+  residueId String @unique
   quantity Decimal
   latitude String
   longitude String

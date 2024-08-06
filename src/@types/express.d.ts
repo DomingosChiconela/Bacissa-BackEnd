@@ -1,7 +1,14 @@
-declare namespace Express {
+import { Request } from 'express';
 
-    export interface Request {
-
-        userId:string
+declare global {
+  namespace Express {
+    interface MulterFile {
+      location: string;
     }
+
+    interface Request {
+      file: MulterFile;
+      userId: string;
+    }
+  }
 }

@@ -22,7 +22,7 @@ const SECRETACCESSKEY = process.env.SECRETACCESSKEY as string
 
 
 export const  uploadS3  = (buckerName:string) => { 
-  return   multer ( { 
+  return    multer ( { 
     storage : multerS3 ( { 
       s3 : s3Config , 
       bucket : buckerName, 
@@ -34,6 +34,7 @@ export const  uploadS3  = (buckerName:string) => {
         const time = new Date().getTime().toString()
         console.log(file.originalname)
         cb ( null , time+"-"+file.originalname) 
+ 
       } 
     } ) 
   } ) }
