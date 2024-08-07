@@ -12,9 +12,12 @@ const postSchema  =  z.object({
     quantity:z.number().positive() ,
     latitude: z.string(),
     logitude:z.string(),
+    description:z.string().optional(),
     residueId:z.string()
 
 })
+
+const updatePostSchema = postSchema.partial();
 
 
 
@@ -34,6 +37,7 @@ export  const createPost = async (req:Request,res:Response)=>{
                 latitude:validation.data.latitude,
                 logitude:validation.data.logitude,
                 residueId: validation.data.residueId,
+                description:validation.data.description,
                 userId:userid
                 
 
@@ -55,6 +59,8 @@ export  const createPost = async (req:Request,res:Response)=>{
 
 export const  getAllPost = async(req:Request , res:Response)=>{
 
+   
+
     try{
 
         const allPost = await db.post.findMany()
@@ -70,6 +76,158 @@ export const  getAllPost = async(req:Request , res:Response)=>{
 
 
 }
+
+
+
+export const getPost = async(req:Request , res:Response)=>{
+
+    const {id} =  req.params
+
+    try{
+
+        const post =  await  db.post.findUnique({
+            where:{
+                id
+            }
+        })
+
+        if(!post){
+             return  res.status(400).json({message:"Post not found"})
+        }
+
+        res.status(200).json({message:"Post found",data:post})
+    }catch(error){
+
+        return res.status(500).json({ message: "Internal Server Error" });
+
+
+    }
+
+
+
+}
+
+export const updatePost = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const validation = updatePostSchema.safeParse(req.body);
+
+    if (!validation.success) {
+        return res.status(400).json({ message: fromZodError(validation.error).details });
+    }
+
+    try {
+        const existingPost = await db.post.findUnique({
+            where: { id }
+        });
+
+        if (!existingPost) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        if (req.userId !== existingPost.userId && req.role !== "ADMIN") {
+            return res.status(403).json({ message: "Access denied" });
+        }
+
+        const dataToUpdate = Object.fromEntries(
+            Object.entries(validation.data).filter(([_, value]) => value !== undefined && value !== null)
+        );
+
+        const updatedPost = await db.post.update({
+            where: { id },
+            data: dataToUpdate,
+        });
+
+        res.status(200).json({ message: "Residue updated", data: updatedPost });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+
+export const deletePost = async(req:Request , res:Response)=>{
+
+    const { id}  =  req.params
+
+
+    try{
+
+        const existingPost = await db.post.findUnique({
+            where: {id}
+        });
+
+        if (!existingPost) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        
+        if(req.userId !== existingPost.userId || req.role!== "ADMIN"){
+
+            return res.status(403).json({ message: "Access denied" });
+        }
+
+        const Post  =  await  db.post.delete({
+            where:{id}
+        })
+
+        if(!Post){
+             return  res.status(400).json({message:"Post not found"})
+        }
+
+        res.status(200).json({message:"Post eliminated"})
+    }catch(error){
+
+        return res.status(500).json({ message: "Internal Server Error" });
+
+
+    }
+
+
+
+}
+
+
+export const UploudImgPost = async(req:Request,res:Response)=>{
+    const userid = req.userId
+    const {id} =  req.params 
+    const {location}= req.file as unknown as Express.MulterFile
+
+
+    try{
+
+        const existingPost = await db.post.findUnique({
+            where:{
+                userId:id 
+            }
+        });
+
+        if (!existingPost) {
+            return res.status(404).json({ message: "Profile not found" });
+        }
+
+        if(req.userId !== existingPost.userId || req.role!== "ADMIN"){
+
+            return res.status(403).json({ message: "Access denied" });
+        }
+        const postUpdated = await db.profile.update({
+
+            where:{
+                id:existingPost.id ,
+            },
+            data:{
+               image:location
+            }
+        })
+
+        return res.status(200).json({message:"Image Post updated",data:postUpdated})
+
+    }catch(error){
+        return res.status(500).json({ message: "Internal Server Error" });
+
+    }
+
+}
+
 
 
 
