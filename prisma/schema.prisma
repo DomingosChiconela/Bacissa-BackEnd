@@ -22,7 +22,7 @@ model User{
   email String  @unique
   password String
   role    Role     @default(USER)
-  token  String?
+  token  String? @unique
   profile Profile?
   post Post[]
   createdAt DateTime @default(now()) 
@@ -117,6 +117,7 @@ model Residue {
 model Post{
     id String  @id @default(uuid())
     image String?
+    price  Decimal
     quantity Decimal
     latitude String
     logitude String

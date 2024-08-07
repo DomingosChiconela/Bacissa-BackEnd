@@ -9,6 +9,7 @@ import { fromZodError } from "zod-validation-error"
 const postSchema  =  z.object({
  //   z.preprocess((val) => parseFloat(parseFloat(val as string).toFixed(2)), z.number().positive())
     image :z.string().optional(),
+    price:z.number(),
     quantity:z.number().positive() ,
     latitude: z.string(),
     logitude:z.string(),
@@ -34,6 +35,7 @@ export  const createPost = async (req:Request,res:Response)=>{
         const newPost = await db.post.create({
             data:{
                 quantity:validation.data.quantity,
+                price:validation.data.price,
                 latitude:validation.data.latitude,
                 logitude:validation.data.logitude,
                 residueId: validation.data.residueId,
@@ -137,7 +139,7 @@ export const updatePost = async (req: Request, res: Response) => {
             data: dataToUpdate,
         });
 
-        res.status(200).json({ message: "Residue updated", data: updatedPost });
+        res.status(200).json({ message: "Post updated", data: updatedPost });
 
     } catch (error) {
         return res.status(500).json({ message: "Internal Server Error" });
@@ -188,31 +190,35 @@ export const deletePost = async(req:Request , res:Response)=>{
 
 
 export const UploudImgPost = async(req:Request,res:Response)=>{
-    const userid = req.userId
+    const userId =  req.userId
     const {id} =  req.params 
-    const {location}= req.file as unknown as Express.MulterFile
+    console.log(id)
+
+    console.log(req.file)
+    
 
 
     try{
-
+        const {location}= req.file as unknown as Express.MulterFile
+       
         const existingPost = await db.post.findUnique({
             where:{
-                userId:id 
+                userId
             }
         });
 
         if (!existingPost) {
-            return res.status(404).json({ message: "Profile not found" });
+            return res.status(404).json({ message: "Post not found" });
         }
 
-        if(req.userId !== existingPost.userId || req.role!== "ADMIN"){
+        if(req.userId !== existingPost.userId && req.role!== "ADMIN"){
 
             return res.status(403).json({ message: "Access denied" });
         }
-        const postUpdated = await db.profile.update({
+        const postUpdated = await db.post.update({
 
             where:{
-                id:existingPost.id ,
+                id ,
             },
             data:{
                image:location

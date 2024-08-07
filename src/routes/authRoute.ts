@@ -14,4 +14,12 @@ authRoute.post("/signup",signup)
 authRoute.post("/login",login)
 
 
+authRoute.post("/")
+
+
+
+
+
+
+
 

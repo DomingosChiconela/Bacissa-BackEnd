@@ -7,6 +7,7 @@ import { residueRoute } from "./routes/residueRoute"
 import { Request,Response } from "express";
 import { uploadS3 } from "./middlewares/uploudMiddleware"
 import { profileRoute } from "./routes/profileRoute"
+import { postRoute } from "./routes/postRoute"
 
 
 
@@ -25,6 +26,7 @@ app.use('/api/auth',authRoute)
 app.use('/api/user',userRoute)
 app.use('/api/residue',residueRoute)
 app.use('/api/profile',profileRoute)
+app.use('/api/post',postRoute)
 
 
 

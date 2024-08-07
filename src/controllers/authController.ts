@@ -1,15 +1,17 @@
 import { Request,Response } from "express";
-import { z } from "zod";
+import { date, z } from "zod";
 import { db } from "../utils/db.server";
 import { fromZodError } from "zod-validation-error"
 import * as jwt from "jsonwebtoken"
+;
 
 const secret  =  process.env.SECRET as string
 
 import { checkPassword, encryptPassword } from "../utils/cryptPassword";
+import { sendEmail } from "../utils/email";
 
 
-const signupSchema = z.object({
+ export const signupSchema = z.object({
 
 
     name:z.string(),
@@ -24,6 +26,10 @@ const loginSchema = signupSchema.pick({
     email: true,
     password: true
   });
+
+
+
+  
 
 
 export const signup = async (req: Request, res: Response) => {
@@ -114,3 +120,5 @@ export const login =  async (req: Request, res: Response) => {
 
 
 }
+
+
