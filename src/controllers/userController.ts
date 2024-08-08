@@ -33,6 +33,33 @@ const forgotSchema=  signupSchema.pick({
 
 
 
+  export const getUser = async(req:Request , res:Response)=>{
+
+    const  id  =  req.userId
+
+    try{
+
+        const user =  await  db.user.findUnique({
+            where:{
+                id
+            }
+        })
+
+        if(!user){
+             return  res.status(400).json({message:"user not found"})
+        }
+
+        res.status(200).json({message:"user found",data:user})
+    }catch(error){
+
+        return res.status(500).json({ message: "Internal Server Error" });
+
+
+    }
+
+
+
+}
 
 
 export const  getAllUser = async(req:Request , res:Response)=>{
@@ -49,7 +76,11 @@ export const  getAllUser = async(req:Request , res:Response)=>{
 
                profile:{
                   select:{
-                    name:true
+                    name:true,
+                    image:true,
+                    createdAt:true,
+                    updatedAt:true,
+                    evaluation:true
                   }
                }
 
@@ -68,6 +99,49 @@ export const  getAllUser = async(req:Request , res:Response)=>{
 
 }
 
+
+
+
+export const deleteUser = async(req:Request , res:Response)=>{
+
+    const { id}  =  req.params
+
+
+    try{
+
+        const existingUser = await db.post.findUnique({
+            where: {id}
+        });
+
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        
+        if(req.userId !== existingUser.userId && req.role!== "ADMIN"){
+
+            return res.status(403).json({ message: "Access denied" });
+        }
+
+        const Post  =  await  db.user.delete({
+            where:{id}
+        })
+
+        if(!Post){
+             return  res.status(400).json({message:"User not found"})
+        }
+
+        res.status(200).json({message:"User eliminated"})
+    }catch(error){
+
+        return res.status(500).json({ message: "Internal Server Error" });
+
+
+    }
+
+
+
+}
 
 
 
@@ -192,6 +266,50 @@ export const  resetPassword =  async  (req: Request, res: Response) => {
         
 
 }
+
+
+export const insightUser  =  async  (req: Request, res: Response) => {
+
+        const id = req.userId
+
+
+    try{
+ 
+         
+          const infoUser = await db.user.findUnique({
+            where: {
+              id,
+            }
+           
+        
+          });
+          
+           
+           
+           
+                res.status(200).json({message:"insight ",data:infoUser})
+    }catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "Internal Server Error"});
+    }
+}
+   
+          
+       
+        
+       
+    
+       
+    
+    
+    
+    
+    
+    
+    
+
+
+
 
 
 

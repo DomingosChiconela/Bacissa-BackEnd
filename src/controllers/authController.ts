@@ -50,6 +50,7 @@ export const signup = async (req: Request, res: Response) => {
         data:{
             email:validation.data.email,
             password: passwordHash,
+     
 
             profile:{
                 create:{
@@ -103,7 +104,7 @@ export const login =  async (req: Request, res: Response) => {
         }
 
 
-        const token  =   jwt.sign({id:user.id, Role:user.role},secret,{expiresIn:"30d"})
+        const token  =   jwt.sign({id:user.id, role:user.role},secret,{expiresIn:"30d"})
 
 
         res.status(200).json({message:"authenticated user",token})

@@ -10,7 +10,7 @@ import { createPost, deletePost, getAllPost, getPost, updatePost, UploudImgPost 
 
 export const  postRoute =  express.Router()
 
-postRoute.get("/",AuthMiddleware,getAllPost)
+postRoute.get("/",getAllPost)
 postRoute.get("/:id",AuthMiddleware,getPost)
 postRoute.post("/",AuthMiddleware,createPost)
 postRoute.put("/:id",AuthMiddleware,updatePost)

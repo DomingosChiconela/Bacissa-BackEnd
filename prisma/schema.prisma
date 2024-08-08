@@ -25,7 +25,7 @@ model User{
   token  String? @unique
   profile Profile?
   post Post[]
-  sentMessages       Message[] @relation("SentMessages") 
+  sentMessages  Message[] @relation("SentMessages") 
   receivedMessages   Message[] @relation("ReceivedMessages") 
    chats     ChatParticipants[]  
   createdAt DateTime @default(now()) 
@@ -62,7 +62,6 @@ model Location {
   profile Profile?
 
   
-
   createdAt DateTime @default(now()) 
   updatedAt DateTime  @updatedAt 
 
