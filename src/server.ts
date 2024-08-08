@@ -32,6 +32,7 @@ app.use('/api/post',postRoute)
 
 
 
+
 app.listen(port , ()=>{
 
 console.log(` servidor rodando em http://localhost:${port}`)
