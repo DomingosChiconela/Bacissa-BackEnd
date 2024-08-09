@@ -35,6 +35,7 @@ app.use('/api/admin',adminRoute)
 
 
 
+
 app.listen(port , ()=>{
 
 console.log(` servidor rodando em http://localhost:${port}`)

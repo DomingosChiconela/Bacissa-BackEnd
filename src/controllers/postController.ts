@@ -8,7 +8,7 @@ import { fromZodError } from "zod-validation-error"
 
 const postSchema  =  z.object({
  //   z.preprocess((val) => parseFloat(parseFloat(val as string).toFixed(2)), z.number().positive())
-    image :z.string().optional(),
+    image:z.string().optional(),
     price:z.number(),
     quantity:z.number().positive() ,
     latitude: z.string(),
@@ -40,7 +40,9 @@ export  const createPost = async (req:Request,res:Response)=>{
                 logitude:validation.data.logitude,
                 residueId: validation.data.residueId,
                 description:validation.data.description,
+                image:validation.data.image,
                 userId:userid
+
                 
 
 
@@ -90,6 +92,22 @@ export const getPost = async(req:Request , res:Response)=>{
         const post =  await  db.post.findUnique({
             where:{
                 id
+            },
+            include:{
+                user:{
+                    select:{
+                        profile:{
+                            select:{
+                                name:true
+                            }
+                        }
+                    }
+                },
+                residue:{
+                    select:{
+                        name:true
+                    }
+                }
             }
         })
 
@@ -194,38 +212,37 @@ export const UploudImgPost = async(req:Request,res:Response)=>{
     const {id} =  req.params 
     console.log(id)
 
-    console.log(req.file)
     
 
 
     try{
         const {location}= req.file as unknown as Express.MulterFile
        
-        const existingPost = await db.post.findUnique({
-            where:{
-                userId
-            }
-        });
+        // const existingPost = await db.post.findUnique({
+        //     where:{
+        //         userId
+        //     }
+        // });
 
-        if (!existingPost) {
-            return res.status(404).json({ message: "Post not found" });
-        }
+        // if (!existingPost) {
+        //     return res.status(404).json({ message: "Post not found" });
+        // }
 
-        if(req.userId !== existingPost.userId && req.role!== "ADMIN"){
+        // if(req.userId !== existingPost.userId && req.role!== "ADMIN"){
 
-            return res.status(403).json({ message: "Access denied" });
-        }
-        const postUpdated = await db.post.update({
+        //     return res.status(403).json({ message: "Access denied" });
+        // }
+        // const postUpdated = await db.post.update({
 
-            where:{
-                id ,
-            },
-            data:{
-               image:location
-            }
-        })
+        //     where:{
+        //         id ,
+        //     },
+        //     data:{
+        //        image:location
+        //     }
+        // })
 
-        return res.status(200).json({message:"Image Post updated",data:postUpdated})
+        return res.status(200).json({message:"Image Post updated",data:location})
 
     }catch(error){
         return res.status(500).json({ message: "Internal Server Error" });

@@ -46,6 +46,17 @@ export const signup = async (req: Request, res: Response) => {
         }
         const passwordHash  =  await encryptPassword(validation.data.password)
 
+        const existingEmail  =  await db.user.findUnique({
+            where:{
+                email:validation.data.email
+            }
+        })
+
+        if(existingEmail){
+
+            res.status(400).json({message:"The email already exists, please enter a new one"})
+        }
+
        const  newUser =  await db.user.create({
         data:{
             email:validation.data.email,
