@@ -15,7 +15,7 @@ postRoute.get("/:id",AuthMiddleware,getPost)
 postRoute.post("/",AuthMiddleware,createPost)
 postRoute.put("/:id",AuthMiddleware,updatePost)
 postRoute.delete("/:id",AuthMiddleware,deletePost)
-postRoute.post("/image",uploadS3("bacissa-post").single('post'),UploudImgPost)
+postRoute.put("/image/:id",AuthMiddleware,uploadS3("bacissa-post").single('post'),UploudImgPost)
 
 
 

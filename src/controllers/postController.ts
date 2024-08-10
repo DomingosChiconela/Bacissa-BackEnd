@@ -218,31 +218,31 @@ export const UploudImgPost = async(req:Request,res:Response)=>{
     try{
         const {location}= req.file as unknown as Express.MulterFile
        
-        // const existingPost = await db.post.findUnique({
-        //     where:{
-        //         userId
-        //     }
-        // });
+         const existingPost = await db.post.findUnique({
+             where:{
+                 userId
+             }
+         });
 
-        // if (!existingPost) {
-        //     return res.status(404).json({ message: "Post not found" });
-        // }
+         if (!existingPost) {
+             return res.status(404).json({ message: "Post not found" });
+         }
 
-        // if(req.userId !== existingPost.userId && req.role!== "ADMIN"){
+         if(req.userId !== existingPost.userId && req.role!== "ADMIN"){
 
-        //     return res.status(403).json({ message: "Access denied" });
-        // }
-        // const postUpdated = await db.post.update({
+             return res.status(403).json({ message: "Access denied" });
+         }
+         const postUpdated = await db.post.update({
 
-        //     where:{
-        //         id ,
-        //     },
-        //     data:{
-        //        image:location
-        //     }
-        // })
+             where:{
+                 id ,
+             },
+             data:{
+                image:location
+             }
+         })
 
-        return res.status(200).json({message:"Image Post updated",data:location})
+        return res.status(200).json({message:"Image Post updated",postUpdated})
 
     }catch(error){
         return res.status(500).json({ message: "Internal Server Error" });

@@ -32,7 +32,7 @@ export const sendEmail = async (to: string,url:string) => {
       subject:"BAcissa[Redefinição de Senha]",
       html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-        <h2 style="text-align: center; color: #333;">Redefinição de Senha</h2>
+        <h2 style="text-align: center; color: #0ec73f;">Redefinição de Senha</h2>
         <p style="font-size: 16px; color: #333;">
           Olá,
         </p>
@@ -40,8 +40,8 @@ export const sendEmail = async (to: string,url:string) => {
           Recebemos uma solicitação para redefinir a senha da sua conta. Se você não fez essa solicitação, ignore este email. Caso contrário, clique no botão abaixo para redefinir sua senha:
         </p>
         <div style="text-align: center; margin: 20px 0;">
-          <a href="http://bacissa-vercel/${url}"
-             style="background-color: #007BFF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">
+          <a href="http://localhost:5173/resetPassord/${url}"
+             style="background-color: #0ec73f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">
             Redefinir Senha
           </a>
         </div>
