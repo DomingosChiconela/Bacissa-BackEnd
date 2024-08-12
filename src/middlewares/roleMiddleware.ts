@@ -28,9 +28,7 @@ export const RoleMiddleware = (roleRequired: string) => {
       try {
         const decode = verify(token, secret) as TokenPayload;
         const { role } = decode;
-        console.log(role)
-        console.log(role)
-        console.log(roleRequired)
+   
         if (roleRequired !== role) {
           return res.status(403).json({ message: "Access denied. You do not have permission to access this resource." });
         }

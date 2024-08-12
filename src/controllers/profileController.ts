@@ -71,7 +71,7 @@ export const getProfile = async(req:Request , res:Response)=>{
 
         const profile =  await  db.profile.findUnique({
             where:{
-                id
+                userId:id
             }
         })
 

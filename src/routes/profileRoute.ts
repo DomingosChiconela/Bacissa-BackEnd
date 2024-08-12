@@ -9,8 +9,8 @@ import { deleteProfile, getAllProfile, getProfile, updateProfile, UploudImgProfi
 export const profileRoute = express.Router()
 
 
-profileRoute.get("/",AuthMiddleware,getAllProfile)
-profileRoute.get("/:id",AuthMiddleware,getProfile)
+profileRoute.get("/allprofile/",AuthMiddleware,getAllProfile)
+profileRoute.get("/",AuthMiddleware,getProfile)
 profileRoute.put("/:id",AuthMiddleware,updateProfile)
 profileRoute.delete("/:id",AuthMiddleware,deleteProfile)
 profileRoute.post("/image",AuthMiddleware,uploadS3("bacissa-profile").single('profile'),UploudImgProfile)

@@ -275,19 +275,49 @@ export const insightUser  =  async  (req: Request, res: Response) => {
 
     try{
  
-         
-          const infoUser = await db.user.findUnique({
+          const totalPosts = await db.post.count({where:{userId:id}})
+          const postsByMonth = await db.post.groupBy({
+            by: ['userId'],
             where: {
-              id,
-            }
-           
-        
+              userId: id, 
+            },
+            _count: {
+              id: true,
+            },
+            _min: {
+              createdAt: true,
+            },
+            orderBy: {
+              _min: {
+                createdAt: 'asc',
+              },
+            },
           });
           
+          const labelMonth = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+          
+          type QuantityByMonth = { [key: string]: number };
+          
+          const quantityByMonth = postsByMonth.reduce<QuantityByMonth>((acc, post) => {
+            if (post._min.createdAt) {
+              const date = new Date(post._min.createdAt);
+              const month = date.getMonth();
+              const year = date.getFullYear().toString();
+              const monthYear = `${labelMonth[month]} ${year}`;
+          
+              if (!acc[monthYear]) {
+                acc[monthYear] = 0;
+              }
+              acc[monthYear] += post._count.id;
+            }
+            
+            return acc;
+          }, {} as QuantityByMonth);
+
+        const month= Object.keys(quantityByMonth);
+        const quantity= Object.values(quantityByMonth);
            
-           
-           
-                res.status(200).json({message:"insight ",data:infoUser})
+                res.status(200).json({message:"insight ",data:{totalPosts,month,quantity}})
     }catch (error) {
         console.log(error)
         return res.status(500).json({ message: "Internal Server Error"});

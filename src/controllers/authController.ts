@@ -102,7 +102,21 @@ export const login =  async (req: Request, res: Response) => {
         const user = await db.user.findUnique({
             where:{
                 email:validation.data.email
+            },
+            select:{
+            id: true,
+            email:  true,
+            password:  true,
+            role:  true,
+            token : true,
+            profile:{
+                select:{
+                    name:true
+                }
             }
+            },
+          
+        
         })
 
         if(!user){
@@ -117,8 +131,12 @@ export const login =  async (req: Request, res: Response) => {
 
         const token  =   jwt.sign({id:user.id, role:user.role},secret,{expiresIn:"30d"})
 
+        const  {role,profile}=user
 
-        res.status(200).json({message:"authenticated user",token})
+        const name = profile?.name
+
+
+        res.status(200).json({message:"authenticated user",token,role,name})
 
         
 
