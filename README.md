@@ -1,7 +1,7 @@
 
 # Bacissa-BackEnd 🌱
 
-**TrilhaVerde** é uma aplicação desenvolvida para solucionar problemas relacionados à coleta ineficiente ou inexistente de resíduos sólidos em Moçambique. A aplicação proporciona aos usuários um ambiente seguro e uma interface intuitiva, promovendo a conscientização ambiental e incentivando práticas de reciclagem.
+**Bacissa** é uma aplicação desenvolvida para solucionar problemas relacionados à coleta ineficiente ou inexistente de resíduos sólidos em Moçambique. A aplicação proporciona aos usuários um ambiente seguro e uma interface intuitiva, promovendo a conscientização ambiental e incentivando práticas de reciclagem.
 
 ## Funcionalidades Principais
 
