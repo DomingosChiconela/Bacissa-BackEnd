@@ -42,10 +42,10 @@
   ### Instalação
 1. **Clone o repositório:**
    ```bash
-   git clone git@github.com:DomingosChiconela/TrilhaVerde-BackEnd.git
+    git clone git@github.com:DomingosChiconela/Bacissa-BackEnd.git
 2. **acesse o projecto que a caba de clonar com o comando:**
    ```bash
-   cd TrilhaVerde-BackEnd
+   cd Bacissa-BackEnd
    
 3. **Instale as dependências**
     ```bash
